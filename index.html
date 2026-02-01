@@ -7,15 +7,17 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@300;400;500;600;700;800&family=Barlow:wght@400;500;600;700&family=Prompt:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     fontFamily: {
-                        rajdhani: ['Rajdhani', 'sans-serif'],
-                        mono: ['Share Tech Mono', 'monospace'],
+                        urbanist: ['Urbanist', 'sans-serif'],
+                        barlow: ['Barlow', 'sans-serif'],
+                        prompt: ['Prompt', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
                     },
                     colors: {
                         gold: '#FFD700',
@@ -31,11 +33,11 @@
     </script>
     <style>
         body {
-            font-family: 'Rajdhani', sans-serif;
+            font-family: 'Urbanist', sans-serif;
             background: linear-gradient(135deg, #1a1008 0%, #2a1a0a 25%, #1a1a2e 50%, #2a1a0a 75%, #1a1008 100%);
             min-height: 100vh;
         }
-        .font-mono { font-family: 'Share Tech Mono', monospace; }
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
         .stage-card { transition: all 0.3s ease; }
         .stage-card.completed { border-color: #22c55e !important; }
         .item-row { transition: background-color 0.2s ease; }
@@ -73,8 +75,8 @@
             <div class="flex items-center gap-3">
                 <span class="material-symbols-outlined text-gold text-3xl">trophy</span>
                 <div>
-                    <h1 class="text-xl md:text-2xl font-bold text-gold tracking-wide leading-tight">ARC Raiders Trophy Tracker</h1>
-                    <p class="text-xs text-gray-400 font-mono">Roaming Threats Quest Line</p>
+                    <h1 class="text-xl md:text-2xl font-bold text-gold tracking-wide leading-tight font-barlow">ARC Raiders Trophy Tracker</h1>
+                    <p class="text-xs text-gray-400 font-prompt">Roaming Threats Quest Line</p>
                 </div>
             </div>
             <div class="flex items-center gap-2">
@@ -109,8 +111,8 @@
                 <img src="https://lh3.googleusercontent.com/gg-dl/AOI_d_-GuvQvTlpQDluwHltBmNc6L-ga5qLpYWYte8Sen_75DVAjUSfXXTYfPOVpO-pkOOqcKpp8bbGz2GdkaTJahzV6jbjHMZ1nTbj3ryyvjgiCbqQFKRl_h6ytycNaKbAyyjWDG7nKdGq9sxbm0ujKUf5mfJ8dYzmbI7dip1hOQFkYfzxwRQ"
                      alt="Completion Bundle" class="w-48 h-28 object-cover rounded-lg border border-gold/40">
                 <div class="flex-1 text-center md:text-left">
-                    <h2 class="text-2xl font-bold text-gold mb-1">Completion Bundle</h2>
-                    <p class="text-sm text-gray-400 mb-3">Complete all five stages to unlock these rewards</p>
+                    <h2 class="text-2xl font-bold text-gold mb-1 font-barlow">Completion Bundle</h2>
+                    <p class="text-sm text-gray-400 mb-3 font-prompt">Complete all five stages to unlock these rewards</p>
                     <div class="flex flex-wrap gap-3 justify-center md:justify-start">
                         <span class="px-3 py-1 bg-purple-900/40 border border-purple-500/50 rounded text-purple-300 text-sm font-semibold">Jupiter Sniper (Legendary)</span>
                         <span class="px-3 py-1 bg-blue-900/40 border border-blue-500/50 rounded text-blue-300 text-sm font-semibold">Guitar (Emote Prop)</span>
@@ -283,7 +285,7 @@
             // Step header
             const stepHeader = `
                 <div class="bg-gradient-to-r from-gold to-yellow-500 text-center py-2">
-                    <h2 class="text-lg font-bold text-black tracking-wider uppercase">${stepLabels[idx]}</h2>
+                    <h2 class="text-lg font-bold text-black tracking-wider uppercase font-barlow">${stepLabels[idx]}</h2>
                 </div>
             `;
 
@@ -293,8 +295,8 @@
                     <img src="${stage.image}" alt="${stage.name}" class="w-full h-32 object-cover opacity-80">
                     <div class="absolute inset-0 bg-gradient-to-t from-surface via-surface/60 to-transparent"></div>
                     <div class="absolute bottom-2 left-3 right-3">
-                        <h3 class="text-base font-bold text-white leading-tight">${stage.name}</h3>
-                        <p class="text-xs text-gray-400">${stage.description}</p>
+                        <h3 class="text-base font-bold text-white leading-tight font-barlow">${stage.name}</h3>
+                        <p class="text-xs text-gray-400 font-prompt">${stage.description}</p>
                     </div>
                     ${stageComplete ? '<div class="done-badge">DONE</div>' : ""}
                 </div>
@@ -320,11 +322,11 @@
                 itemsHtml += `
                     <div class="item-row ${done ? "item-done" : ""} border border-gold/20 rounded-lg p-2 bg-surface-light/50">
                         <div class="flex items-center justify-between mb-1">
-                            <span class="item-name text-sm font-semibold ${done ? "text-green-400" : "text-gray-200"}">${item.name}</span>
+                            <span class="item-name text-sm font-semibold font-barlow ${done ? "text-green-400" : "text-gray-200"}">${item.name}</span>
                             <span class="text-xs font-mono ${done ? "text-green-400" : "text-gold"}">${count}/${item.required}</span>
                         </div>
                         <div class="flex items-center justify-between">
-                            <span class="text-xs text-gray-500 truncate mr-2" title="${item.location}">${item.location}</span>
+                            <span class="text-xs text-gray-500 truncate mr-2 font-prompt" title="${item.location}">${item.location}</span>
                             <div class="flex items-center gap-1 flex-shrink-0">
                                 <button onclick="modItem('${item.id}', -1)" class="btn-mod w-6 h-6 flex items-center justify-center bg-red-900/40 border border-red-700/50 rounded text-red-400 text-xs font-bold hover:bg-red-800/60">&minus;</button>
                                 <button onclick="modItem('${item.id}', 1)" class="btn-mod w-6 h-6 flex items-center justify-center bg-green-900/40 border border-green-700/50 rounded text-green-400 text-xs font-bold hover:bg-green-800/60">+</button>
@@ -339,7 +341,7 @@
             const rewardsHtml = `
                 <div class="border-t border-gold/20 mx-3 mt-1">
                     <button onclick="toggleRewards(${stage.id})" class="w-full flex items-center justify-between py-2 text-left">
-                        <span class="text-sm font-bold text-gold uppercase tracking-wider">Rewards:</span>
+                        <span class="text-sm font-bold text-gold uppercase tracking-wider font-barlow">Rewards:</span>
                         <span id="rewardsIcon_${stage.id}" class="material-symbols-outlined text-gold text-base transition-transform">expand_more</span>
                     </button>
                     <div id="rewards_${stage.id}" class="rewards-content pb-2">
