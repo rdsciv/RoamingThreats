@@ -136,24 +136,37 @@
                 </button>
             </div>
 
-            <!-- Share Section -->
-            <div class="mb-6">
-                <label class="block text-sm font-semibold text-gray-300 mb-2">Share Link</label>
-                <p class="text-xs text-gray-500 mb-2">Copy this URL to share your current progress with others.</p>
+            <!-- Share Link -->
+            <div class="mb-5">
+                <label class="block text-sm font-semibold text-gray-300 mb-1">Share Link</label>
+                <p class="text-xs text-gray-500 mb-2">Copy this URL to share your current progress.</p>
                 <div class="flex gap-2">
                     <input id="shareUrl" type="text" readonly class="flex-1 bg-surface-light border border-card-border rounded px-3 py-2 text-sm font-mono text-gray-300 focus:outline-none focus:border-gold/50">
                     <button onclick="copyShareUrl()" class="px-3 py-2 bg-gold/20 border border-gold/40 rounded hover:bg-gold/30 text-gold text-sm font-semibold transition-colors">Copy</button>
                 </div>
             </div>
 
-            <!-- Load Section -->
-            <div>
-                <label class="block text-sm font-semibold text-gray-300 mb-2">Load From URL</label>
-                <p class="text-xs text-gray-500 mb-2">Paste a shared URL or state string to load someone else's progress.</p>
+            <!-- Backup Code -->
+            <div class="mb-5">
+                <label class="block text-sm font-semibold text-gray-300 mb-1">Backup Code</label>
+                <p class="text-xs text-gray-500 mb-2">Save this code to restore your progress later or on another device.</p>
                 <div class="flex gap-2">
-                    <input id="loadInput" type="text" placeholder="Paste share URL or ?state= value" class="flex-1 bg-surface-light border border-card-border rounded px-3 py-2 text-sm font-mono text-gray-300 focus:outline-none focus:border-gold/50">
+                    <input id="backupCode" type="text" readonly class="flex-1 bg-surface-light border border-card-border rounded px-3 py-2 text-sm font-mono text-gray-300 focus:outline-none focus:border-gold/50">
+                    <button onclick="copyBackupCode()" class="px-3 py-2 bg-gold/20 border border-gold/40 rounded hover:bg-gold/30 text-gold text-sm font-semibold transition-colors">Copy</button>
+                </div>
+            </div>
+
+            <div class="border-t border-card-border pt-4">
+            <!-- Load Data -->
+            <div>
+                <label class="block text-sm font-semibold text-gray-300 mb-1">Load Data</label>
+                <p class="text-xs text-gray-500 mb-2">Paste a share link or backup code to load progress.</p>
+                <div class="flex gap-2">
+                    <input id="loadInput" type="text" placeholder="Paste link or backup code..." class="flex-1 bg-surface-light border border-card-border rounded px-3 py-2 text-sm font-mono text-gray-300 focus:outline-none focus:border-gold/50">
                     <button onclick="loadFromInput()" class="px-3 py-2 bg-gold/20 border border-gold/40 rounded hover:bg-gold/30 text-gold text-sm font-semibold transition-colors">Load</button>
                 </div>
+                <p id="loadMsg" class="text-xs mt-2 h-4 font-mono"></p>
+            </div>
             </div>
         </div>
     </div>
@@ -461,7 +474,10 @@ function resetTracker() {
         const encoded = btoa(JSON.stringify(trackerState));
         const url = window.location.origin + window.location.pathname + "?state=" + encoded;
         document.getElementById("shareUrl").value = url;
+        document.getElementById("backupCode").value = encoded;
         document.getElementById("loadInput").value = "";
+        const msg = document.getElementById("loadMsg");
+        if (msg) { msg.textContent = ""; msg.className = "text-xs mt-2 h-4 font-mono"; }
         document.getElementById("shareModal").classList.add("active");
     }
 
@@ -473,7 +489,17 @@ function resetTracker() {
         const input = document.getElementById("shareUrl");
         input.select();
         navigator.clipboard.writeText(input.value).then(() => {
-            // Brief visual feedback
+            const btn = input.nextElementSibling;
+            const orig = btn.textContent;
+            btn.textContent = "Copied!";
+            setTimeout(() => btn.textContent = orig, 1500);
+        });
+    }
+
+    function copyBackupCode() {
+        const input = document.getElementById("backupCode");
+        input.select();
+        navigator.clipboard.writeText(input.value).then(() => {
             const btn = input.nextElementSibling;
             const orig = btn.textContent;
             btn.textContent = "Copied!";
@@ -483,6 +509,7 @@ function resetTracker() {
 
     function loadFromInput() {
         const raw = document.getElementById("loadInput").value.trim();
+        const msg = document.getElementById("loadMsg");
         if (!raw) return;
 
         let stateStr = raw;
@@ -501,13 +528,17 @@ function resetTracker() {
             if (typeof parsed === "object" && parsed !== null) {
                 trackerState = parsed;
                 saveState();
-                closeShareModal();
-                render();
+                msg.textContent = "Data loaded successfully!";
+                msg.className = "text-xs mt-2 h-4 font-mono text-green-400";
+                setTimeout(() => { closeShareModal(); render(); }, 800);
+                return;
             } else {
-                alert("Invalid state data.");
+                msg.textContent = "Invalid data format.";
+                msg.className = "text-xs mt-2 h-4 font-mono text-red-400";
             }
         } catch (e) {
-            alert("Could not decode the provided state. Make sure you copied the full URL or state string.");
+            msg.textContent = "Invalid code or link.";
+            msg.className = "text-xs mt-2 h-4 font-mono text-red-400";
         }
     }
 
