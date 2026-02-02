@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ARC Raiders Trophy Tracker</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏆</text></svg>">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -52,6 +53,34 @@
             padding: 2px 10px; border-radius: 4px; font-size: 0.75rem;
             text-transform: uppercase; letter-spacing: 1px;
         }
+        .qty-input {
+            width: 2.5rem; text-align: center; background: transparent;
+            border: 1px solid rgba(255,215,0,0.3); border-radius: 4px;
+            color: inherit; font-family: 'JetBrains Mono', monospace; font-size: 0.75rem;
+            padding: 0 2px; -moz-appearance: textfield;
+        }
+        .qty-input::-webkit-outer-spin-button,
+        .qty-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+        .qty-input:focus { outline: none; border-color: rgba(255,215,0,0.6); }
+        .tooltip-wrap { position: relative; }
+        .tooltip-wrap .tip-text {
+            visibility: hidden; opacity: 0;
+            position: absolute; bottom: 125%; left: 50%; transform: translateX(-50%);
+            background: #1a1a2e; border: 1px solid #FFD700; color: #e5e5e5;
+            padding: 6px 10px; border-radius: 6px; font-size: 0.7rem; line-height: 1.3;
+            width: max-content; max-width: 220px; z-index: 20;
+            transition: opacity 0.15s ease; pointer-events: none;
+            font-family: 'Prompt', sans-serif;
+        }
+        .tooltip-wrap .tip-text::after {
+            content: ''; position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
+            border: 5px solid transparent; border-top-color: #FFD700;
+        }
+        .tooltip-wrap:hover .tip-text { visibility: visible; opacity: 1; }
+        #confettiCanvas {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 9999;
+        }
         .modal-overlay {
             background: rgba(0,0,0,0.7); backdrop-filter: blur(4px);
             opacity: 0; pointer-events: none; transition: opacity 0.2s ease;
@@ -63,6 +92,7 @@
     </style>
 </head>
 <body class="text-gray-200">
+    <canvas id="confettiCanvas"></canvas>
 
     <!-- Header -->
     <header class="sticky top-0 z-40 bg-surface/95 backdrop-blur border-b border-gold/30 shadow-lg">
@@ -102,6 +132,7 @@
 
     <!-- Main Content -->
     <main class="max-w-[90rem] mx-auto px-4 py-6">
+        <div id="summarySection" class="mb-4"></div>
         <div id="stagesContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4"></div>
     </main>
 
@@ -155,10 +186,10 @@
             id: 1, name: "Roaming Threats", description: "Basic ARC units & industrial scavenging.",
             image: stageImages[1],
             items: [
-                { id: "s1_i1", name: "Rusted Bolts", required: 3, location: "Mechanical Areas (Cabinets)", image: "https://arcraiders.wiki/w/images/thumb/b/bf/Rusted_Bolts.png/50px-Rusted_Bolts.png.webp" },
-                { id: "s1_i2", name: "Pop Trigger", required: 15, location: "Kill Pops (Exploders)", image: "https://arcraiders.wiki/w/images/thumb/c/c6/Pop_Trigger.png/50px-Pop_Trigger.png.webp" },
-                { id: "s1_i3", name: "Tick Pod", required: 15, location: "Kill Ticks (Spiders)", image: "https://arcraiders.wiki/w/images/thumb/9/95/Tick_Pod.png/50px-Tick_Pod.png.webp" },
-                { id: "s1_i4", name: "Surveyor Vault", required: 5, location: "Kill Surveyors (Balls)", image: "https://arcraiders.wiki/w/images/thumb/a/a9/Surveyor_Vault.png/50px-Surveyor_Vault.png.webp" }
+                { id: "s1_i1", name: "Rusted Bolts", required: 3, location: "Mechanical Areas (Cabinets)", image: "https://arcraiders.wiki/w/images/thumb/b/bf/Rusted_Bolts.png/50px-Rusted_Bolts.png.webp", tip: "Check filing cabinets and toolboxes in industrial buildings. Trainyard and factory areas have the highest density." },
+                { id: "s1_i2", name: "Pop Trigger", required: 15, location: "Kill Pops (Exploders)", image: "https://arcraiders.wiki/w/images/thumb/c/c6/Pop_Trigger.png/50px-Pop_Trigger.png.webp", tip: "Pops are the small exploding units. They spawn in large groups — use AoE or keep your distance. Very common across all maps." },
+                { id: "s1_i3", name: "Tick Pod", required: 15, location: "Kill Ticks (Spiders)", image: "https://arcraiders.wiki/w/images/thumb/9/95/Tick_Pod.png/50px-Tick_Pod.png.webp", tip: "Ticks are the small spider-like bots found in dark indoor areas and caves. They swarm, so bring a shotgun or SMG." },
+                { id: "s1_i4", name: "Surveyor Vault", required: 5, location: "Kill Surveyors (Balls)", image: "https://arcraiders.wiki/w/images/thumb/a/a9/Surveyor_Vault.png/50px-Surveyor_Vault.png.webp", tip: "Surveyors are the floating orbs that scan the area. Shoot them down quickly before they alert other ARC units." }
             ],
             rewards: [
                 { name: "10x Mod Components", image: "https://arcraiders.wiki/w/images/thumb/0/0f/Mod_Components.png/50px-Mod_Components.png.webp" },
@@ -171,10 +202,10 @@
             id: 2, name: "Soaring Menaces", description: "Aerial threats & medical supplies.",
             image: stageImages[2],
             items: [
-                { id: "s2_i1", name: "Spotter Relay", required: 10, location: "Kill Spotters", image: "https://arcraiders.wiki/w/images/thumb/5/58/Spotter_Relay.png/50px-Spotter_Relay.png.webp" },
-                { id: "s2_i2", name: "Expired Respirator", required: 3, location: "Medical Areas", image: "https://arcraiders.wiki/w/images/thumb/b/ba/Expired_Respirator.png/50px-Expired_Respirator.png.webp" },
-                { id: "s2_i3", name: "Wasp Driver", required: 20, location: "Kill Wasps (Drones)", image: "https://arcraiders.wiki/w/images/thumb/3/30/Wasp_Driver.png/50px-Wasp_Driver.png.webp" },
-                { id: "s2_i4", name: "Hornet Driver", required: 15, location: "Kill Hornets", image: "https://arcraiders.wiki/w/images/thumb/b/bb/Hornet_Driver.png/50px-Hornet_Driver.png.webp" }
+                { id: "s2_i1", name: "Spotter Relay", required: 10, location: "Kill Spotters", image: "https://arcraiders.wiki/w/images/thumb/5/58/Spotter_Relay.png/50px-Spotter_Relay.png.webp", tip: "Spotters are the small flying scouts. They appear alongside other ARC patrols and go down fast — just prioritize them first." },
+                { id: "s2_i2", name: "Expired Respirator", required: 3, location: "Medical Areas", image: "https://arcraiders.wiki/w/images/thumb/b/ba/Expired_Respirator.png/50px-Expired_Respirator.png.webp", tip: "Search medical cabinets and first-aid stations in hospitals and bunkers. Also check bathrooms and locker rooms." },
+                { id: "s2_i3", name: "Wasp Driver", required: 20, location: "Kill Wasps (Drones)", image: "https://arcraiders.wiki/w/images/thumb/3/30/Wasp_Driver.png/50px-Wasp_Driver.png.webp", tip: "Wasps are the aggressive drones that strafe and shoot. They're common in open areas. This is the biggest grind — farm them whenever you see them." },
+                { id: "s2_i4", name: "Hornet Driver", required: 15, location: "Kill Hornets", image: "https://arcraiders.wiki/w/images/thumb/b/bb/Hornet_Driver.png/50px-Hornet_Driver.png.webp", tip: "Hornets are larger, tougher drones. They often appear during escalation events. Aim for weak points for faster kills." }
             ],
             rewards: [
                 { name: "3x Vita Spray", image: "https://arcraiders.wiki/w/images/thumb/1/1d/Vita_Spray.png/50px-Vita_Spray.png.webp" },
@@ -187,10 +218,10 @@
             id: 3, name: "Ferocious Foes", description: "Heavy armor & hardened targets.",
             image: stageImages[3],
             items: [
-                { id: "s3_i1", name: "ARC Perf. Steel", required: 10, location: "Rare Drop (Heavy Units)", image: "https://arcraiders.wiki/w/images/thumb/0/02/ARC_Performance_Steel.png/50px-ARC_Performance_Steel.png.webp" },
-                { id: "s3_i2", name: "Shredder Gyro", required: 5, location: "Kill Shredders (Stella Montis)", image: "https://arcraiders.wiki/w/images/thumb/9/96/Shredder_Gyro.png/50px-Shredder_Gyro.png.webp" },
-                { id: "s3_i3", name: "Leaper Pulse Unit", required: 10, location: "Kill Leapers", image: "https://arcraiders.wiki/w/images/thumb/a/a0/Leaper_Pulse_Unit.png/50px-Leaper_Pulse_Unit.png.webp" },
-                { id: "s3_i4", name: "Bastion Cell", required: 5, location: "Kill Bastions (Tanks)", image: "https://arcraiders.wiki/w/images/thumb/0/06/Bastion_Cell.png/50px-Bastion_Cell.png.webp" }
+                { id: "s3_i1", name: "ARC Perf. Steel", required: 10, location: "Rare Drop (Heavy Units)", image: "https://arcraiders.wiki/w/images/thumb/0/02/ARC_Performance_Steel.png/50px-ARC_Performance_Steel.png.webp", tip: "Drops from heavy ARC units like Bastions and Leapers. Not guaranteed — expect to grind. Higher threat zones have better rates." },
+                { id: "s3_i2", name: "Shredder Gyro", required: 5, location: "Kill Shredders (Stella Montis)", image: "https://arcraiders.wiki/w/images/thumb/9/96/Shredder_Gyro.png/50px-Shredder_Gyro.png.webp", tip: "Shredders spawn in the Stella Montis region. They're fast melee bots — keep distance and use heavy weapons." },
+                { id: "s3_i3", name: "Leaper Pulse Unit", required: 10, location: "Kill Leapers", image: "https://arcraiders.wiki/w/images/thumb/a/a0/Leaper_Pulse_Unit.png/50px-Leaper_Pulse_Unit.png.webp", tip: "Leapers are agile quadrupeds that jump and dodge. They appear in mid-to-high threat areas. Bring a fast-firing weapon." },
+                { id: "s3_i4", name: "Bastion Cell", required: 5, location: "Kill Bastions (Tanks)", image: "https://arcraiders.wiki/w/images/thumb/0/06/Bastion_Cell.png/50px-Bastion_Cell.png.webp", tip: "Bastions are the heavy tank units. Focus fire on weak points (legs, vents). Bring explosives or armor-piercing ammo." }
             ],
             rewards: [
                 { name: "1x Kinetic Converter", image: "https://arcraiders.wiki/w/images/thumb/7/71/Kinetic_Converter.png/50px-Kinetic_Converter.png.webp" },
@@ -203,10 +234,10 @@
             id: 4, name: "Dominant Dangers", description: "Elite units & crafting materials.",
             image: stageImages[4],
             items: [
-                { id: "s4_i1", name: "ARC Synth. Resin", required: 10, location: "Rare Drop (Elite Units)", image: "https://arcraiders.wiki/w/images/thumb/7/72/ARC_Synthetic_Resin.png/50px-ARC_Synthetic_Resin.png.webp" },
-                { id: "s4_i2", name: "Magnetic Accelerator", required: 10, location: "Craft (Refiner 3) / Exodus", image: "https://arcraiders.wiki/w/images/thumb/5/5e/Magnetic_Accelerator.png/50px-Magnetic_Accelerator.png.webp" },
-                { id: "s4_i3", name: "Rocketeer Driver", required: 8, location: "Kill Rocketeers", image: "https://arcraiders.wiki/w/images/thumb/e/ef/Rocketeer_Driver.png/50px-Rocketeer_Driver.png.webp" },
-                { id: "s4_i4", name: "Queen Reactor", required: 3, location: "Kill Queens (Event)", image: "https://arcraiders.wiki/w/images/thumb/6/6b/Queen_Reactor.png/50px-Queen_Reactor.png.webp" }
+                { id: "s4_i1", name: "ARC Synth. Resin", required: 10, location: "Rare Drop (Elite Units)", image: "https://arcraiders.wiki/w/images/thumb/7/72/ARC_Synthetic_Resin.png/50px-ARC_Synthetic_Resin.png.webp", tip: "Rare drop from elite ARC units. Farm high-threat zones and escalation events for the best chance." },
+                { id: "s4_i2", name: "Magnetic Accelerator", required: 10, location: "Craft (Refiner 3) / Exodus", image: "https://arcraiders.wiki/w/images/thumb/5/5e/Magnetic_Accelerator.png/50px-Magnetic_Accelerator.png.webp", tip: "Craftable at the Refiner (tier 3) or found in Exodus zones. Crafting is more reliable if you have the materials." },
+                { id: "s4_i3", name: "Rocketeer Driver", required: 8, location: "Kill Rocketeers", image: "https://arcraiders.wiki/w/images/thumb/e/ef/Rocketeer_Driver.png/50px-Rocketeer_Driver.png.webp", tip: "Rocketeers are the humanoid bots with rocket launchers. Stay mobile and use cover. They appear in medium-high threat areas." },
+                { id: "s4_i4", name: "Queen Reactor", required: 3, location: "Kill Queens (Event)", image: "https://arcraiders.wiki/w/images/thumb/6/6b/Queen_Reactor.png/50px-Queen_Reactor.png.webp", tip: "Queens spawn during special ARC events (marked on map). Bring a full squad and heavy firepower. Guaranteed drop on kill." }
             ],
             rewards: [
                 { name: "1x Bobcat IV SMG", image: "https://arcraiders.wiki/w/images/thumb/3/36/Bobcat-Level1.png/50px-Bobcat-Level1.png.webp" },
@@ -219,10 +250,10 @@
             id: 5, name: "Imposing Behemoths", description: "Map bosses & Exodus zones.",
             image: stageImages[5],
             items: [
-                { id: "s5_i1", name: "Exodus Modules", required: 5, location: "Exodus Areas", image: "https://arcraiders.wiki/w/images/thumb/1/1b/Exodus_Modules.png/50px-Exodus_Modules.png.webp" },
-                { id: "s5_i2", name: "Geiger Counter", required: 3, location: "Stella Montis Assembly", image: "https://arcraiders.wiki/w/images/thumb/3/37/Geiger_Counter.png/50px-Geiger_Counter.png.webp" },
-                { id: "s5_i3", name: "Bombardier Cell", required: 8, location: "Kill Bombardiers", image: "https://arcraiders.wiki/w/images/thumb/4/46/Bombardier_Cell.png/50px-Bombardier_Cell.png.webp" },
-                { id: "s5_i4", name: "Matriarch Reactor", required: 3, location: "Kill Matriarch (Boss)", image: "https://arcraiders.wiki/w/images/thumb/2/24/Matriarch_Reactor.png/50px-Matriarch_Reactor.png.webp" }
+                { id: "s5_i1", name: "Exodus Modules", required: 5, location: "Exodus Areas", image: "https://arcraiders.wiki/w/images/thumb/1/1b/Exodus_Modules.png/50px-Exodus_Modules.png.webp", tip: "Found in Exodus zone containers. These zones are high-risk PvPvE — gear up and extract quickly." },
+                { id: "s5_i2", name: "Geiger Counter", required: 3, location: "Stella Montis Assembly", image: "https://arcraiders.wiki/w/images/thumb/3/37/Geiger_Counter.png/50px-Geiger_Counter.png.webp", tip: "Found at the assembly stations in Stella Montis. Check the industrial buildings near the main factory area." },
+                { id: "s5_i3", name: "Bombardier Cell", required: 8, location: "Kill Bombardiers", image: "https://arcraiders.wiki/w/images/thumb/4/46/Bombardier_Cell.png/50px-Bombardier_Cell.png.webp", tip: "Bombardiers are the large artillery bots. They're slow but hit hard at range. Close the distance and target weak spots." },
+                { id: "s5_i4", name: "Matriarch Reactor", required: 3, location: "Kill Matriarch (Boss)", image: "https://arcraiders.wiki/w/images/thumb/2/24/Matriarch_Reactor.png/50px-Matriarch_Reactor.png.webp", tip: "The Matriarch is a world boss. Listen for the siren and check the map marker. Bring a squad — guaranteed drop on kill." }
             ],
             rewards: [
                 { name: "2x Snap Hook", image: "https://arcraiders.wiki/w/images/thumb/5/56/Snap_Hook.png/50px-Snap_Hook.png.webp" },
@@ -331,14 +362,16 @@
                                 <img src="${item.image}" alt="${item.name}" class="w-8 h-8 object-contain flex-shrink-0">
                                 <span class="item-name text-sm font-semibold font-barlow ${done ? "text-green-400" : "text-gray-200"}">${item.name}</span>
                             </div>
-                            <span class="text-xs font-mono ${done ? "text-green-400" : "text-gold"}">${count}/${item.required}</span>
-                        </div>
-                        <div class="flex items-center justify-between">
-                            <span class="text-xs text-gray-500 truncate mr-2 font-prompt" title="${item.location}">${item.location}</span>
                             <div class="flex items-center gap-1 flex-shrink-0">
                                 <button onclick="modItem('${item.id}', -1)" class="btn-mod w-6 h-6 flex items-center justify-center bg-red-900/40 border border-red-700/50 rounded text-red-400 text-xs font-bold hover:bg-red-800/60">&minus;</button>
+                                <input type="number" min="0" max="${item.required}" value="${count}" onchange="setItemCount('${item.id}', this.value, ${item.required})" class="qty-input ${done ? "text-green-400" : "text-gold"}">
                                 <button onclick="modItem('${item.id}', 1)" class="btn-mod w-6 h-6 flex items-center justify-center bg-green-900/40 border border-green-700/50 rounded text-green-400 text-xs font-bold hover:bg-green-800/60">+</button>
+                                <span class="text-xs font-mono ${done ? "text-green-400" : "text-gray-500"} ml-0.5">/${item.required}</span>
                             </div>
+                        </div>
+                        <div class="flex items-center gap-1">
+                            <span class="text-xs text-gray-500 truncate font-prompt" title="${item.location}">${item.location}</span>
+                            ${item.tip ? `<span class="tooltip-wrap flex-shrink-0"><span class="material-symbols-outlined text-gold/50 text-sm cursor-help" style="font-size:14px">info</span><span class="tip-text">${item.tip}</span></span>` : ""}
                         </div>
                     </div>
                 `;
@@ -363,6 +396,28 @@
         renderCompletionBundle(container);
 
         updateGlobalProgress();
+        renderSummary();
+        checkCompletionConfetti();
+    }
+
+    function renderSummary() {
+        const el = document.getElementById("summarySection");
+        const needed = [];
+        trophyProjectData.forEach(stage => {
+            stage.items.forEach(item => {
+                const count = getCount(item.id);
+                const remaining = item.required - Math.min(count, item.required);
+                if (remaining > 0) {
+                    needed.push({ name: item.name, remaining, image: item.image });
+                }
+            });
+        });
+        if (needed.length === 0) {
+            el.innerHTML = `<div class="bg-green-900/30 border border-green-500/40 rounded-lg px-4 py-3 text-center text-green-400 font-semibold font-barlow tracking-wide"><span class="material-symbols-outlined align-middle mr-1">celebration</span>All materials collected!</div>`;
+            return;
+        }
+        const pills = needed.map(n => `<span class="inline-flex items-center gap-1.5 bg-surface-light border border-gold/20 rounded-full px-2.5 py-1 text-xs font-mono text-gray-300"><img src="${n.image}" class="w-4 h-4 object-contain"><span class="text-gold font-bold">${n.remaining}</span> ${n.name}</span>`).join(" ");
+        el.innerHTML = `<div class="bg-surface/80 border border-gold/20 rounded-lg px-4 py-3"><span class="text-sm font-bold text-gold font-barlow uppercase tracking-wider mr-2">Still Needed:</span><div class="flex flex-wrap gap-1.5 mt-2">${pills}</div></div>`;
     }
 
     function renderCompletionBundle(container) {
@@ -463,7 +518,6 @@
 
     // ─── Actions ────────────────────────────────────────────────────────
     function modItem(itemId, delta) {
-        // Find the item to get the max
         let maxVal = Infinity;
         for (const stage of trophyProjectData) {
             for (const item of stage.items) {
@@ -473,6 +527,14 @@
         const current = getCount(itemId);
         const next = Math.max(0, Math.min(current + delta, maxVal));
         trackerState[itemId] = next;
+        saveState();
+        render();
+    }
+
+    function setItemCount(itemId, value, max) {
+        const v = parseInt(value, 10);
+        if (isNaN(v)) return;
+        trackerState[itemId] = Math.max(0, Math.min(v, max));
         saveState();
         render();
     }
@@ -539,8 +601,87 @@ function resetTracker() {
         if (e.target === this) closeLoadModal();
     });
 
+    // ─── Confetti ─────────────────────────────────────────────────────
+    const completedStages = new Set();
+    let wasAllComplete = false;
+
+    function checkCompletionConfetti() {
+        const currentComplete = new Set();
+        let allDone = true;
+        trophyProjectData.forEach(stage => {
+            if (isStageComplete(stage)) currentComplete.add(stage.id);
+            else allDone = false;
+        });
+        // Check for newly completed stages
+        currentComplete.forEach(id => {
+            if (!completedStages.has(id)) fireConfetti();
+        });
+        // Check for 100% completion
+        if (allDone && !wasAllComplete) fireConfetti();
+        // Update tracking
+        completedStages.clear();
+        currentComplete.forEach(id => completedStages.add(id));
+        wasAllComplete = allDone;
+    }
+
+    function fireConfetti() {
+        const canvas = document.getElementById("confettiCanvas");
+        const ctx = canvas.getContext("2d");
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        const particles = [];
+        const colors = ["#FFD700", "#FFA500", "#FFEC8B", "#DAA520", "#F0E68C", "#FFB347"];
+        for (let i = 0; i < 120; i++) {
+            particles.push({
+                x: canvas.width / 2 + (Math.random() - 0.5) * 300,
+                y: canvas.height / 2,
+                vx: (Math.random() - 0.5) * 16,
+                vy: Math.random() * -14 - 4,
+                w: Math.random() * 8 + 4,
+                h: Math.random() * 6 + 2,
+                color: colors[Math.floor(Math.random() * colors.length)],
+                rot: Math.random() * Math.PI * 2,
+                rv: (Math.random() - 0.5) * 0.3,
+                life: 1,
+            });
+        }
+        let frame;
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            let alive = false;
+            particles.forEach(p => {
+                p.x += p.vx;
+                p.vy += 0.35;
+                p.y += p.vy;
+                p.rot += p.rv;
+                p.life -= 0.012;
+                if (p.life <= 0) return;
+                alive = true;
+                ctx.save();
+                ctx.translate(p.x, p.y);
+                ctx.rotate(p.rot);
+                ctx.globalAlpha = p.life;
+                ctx.fillStyle = p.color;
+                ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+                ctx.restore();
+            });
+            if (alive) frame = requestAnimationFrame(animate);
+            else ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+        animate();
+    }
+
+    // Initialize completed stages without triggering confetti
+    function initCompletionTracking() {
+        trophyProjectData.forEach(stage => {
+            if (isStageComplete(stage)) completedStages.add(stage.id);
+        });
+        wasAllComplete = trophyProjectData.every(s => isStageComplete(s));
+    }
+
     // ─── Init ───────────────────────────────────────────────────────────
     initState();
+    initCompletionTracking();
     render();
     </script>
 </body>
