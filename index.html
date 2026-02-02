@@ -108,16 +108,16 @@
         <!-- Completion Bundle -->
         <div id="completionBundle" class="mt-8 border-2 border-gold/30 rounded-xl bg-surface/80 p-6 completion-glow">
             <div class="flex flex-col md:flex-row items-center gap-6">
-                <img src="https://lh3.googleusercontent.com/gg-dl/AOI_d_-GuvQvTlpQDluwHltBmNc6L-ga5qLpYWYte8Sen_75DVAjUSfXXTYfPOVpO-pkOOqcKpp8bbGz2GdkaTJahzV6jbjHMZ1nTbj3ryyvjgiCbqQFKRl_h6ytycNaKbAyyjWDG7nKdGq9sxbm0ujKUf5mfJ8dYzmbI7dip1hOQFkYfzxwRQ"
+                <img src="https://arcraiders.wiki/w/images/c/c4/Trophy_Display_card.png"
                      alt="Completion Bundle" class="w-48 h-28 object-cover rounded-lg border border-gold/40">
                 <div class="flex-1 text-center md:text-left">
                     <h2 class="text-2xl font-bold text-gold mb-1 font-barlow">Completion Bundle</h2>
                     <p class="text-sm text-gray-400 mb-3 font-prompt">Complete all five stages to unlock these rewards</p>
                     <div class="flex flex-wrap gap-3 justify-center md:justify-start">
-                        <span class="px-3 py-1 bg-purple-900/40 border border-purple-500/50 rounded text-purple-300 text-sm font-semibold">Jupiter Sniper (Legendary)</span>
-                        <span class="px-3 py-1 bg-blue-900/40 border border-blue-500/50 rounded text-blue-300 text-sm font-semibold">Guitar (Emote Prop)</span>
-                        <span class="px-3 py-1 bg-green-900/40 border border-green-500/50 rounded text-green-300 text-sm font-semibold">Howl (Gesture)</span>
-                        <span class="px-3 py-1 bg-yellow-900/40 border border-yellow-500/50 rounded text-yellow-300 text-sm font-semibold">300k Coins (Currency)</span>
+                        <span class="px-3 py-1 bg-purple-900/40 border border-purple-500/50 rounded text-purple-300 text-sm font-semibold flex items-center gap-2"><img src="https://arcraiders.wiki/w/images/thumb/6/68/Jupiter.png/50px-Jupiter.png.webp" alt="Jupiter Sniper" class="w-6 h-6 object-contain">Jupiter Sniper (Legendary)</span>
+                        <span class="px-3 py-1 bg-blue-900/40 border border-blue-500/50 rounded text-blue-300 text-sm font-semibold flex items-center gap-2"><img src="https://arcraiders.wiki/w/images/thumb/5/50/Acoustic_Guitar.png/50px-Acoustic_Guitar.png.webp" alt="Guitar" class="w-6 h-6 object-contain">Guitar (Emote Prop)</span>
+                        <span class="px-3 py-1 bg-green-900/40 border border-green-500/50 rounded text-green-300 text-sm font-semibold flex items-center gap-2"><span class="material-symbols-outlined text-base">gesture</span>Howl (Gesture)</span>
+                        <span class="px-3 py-1 bg-yellow-900/40 border border-yellow-500/50 rounded text-yellow-300 text-sm font-semibold flex items-center gap-2"><img src="https://arcraiders.wiki/w/images/thumb/7/7b/Icon_Coins.png/50px-Icon_Coins.png.webp" alt="300k Coins" class="w-6 h-6 object-contain">300k Coins (Currency)</span>
                     </div>
                 </div>
                 <div id="completionStatus" class="text-center">
@@ -163,11 +163,11 @@
     <script>
     // ─── Data ───────────────────────────────────────────────────────────
     const stageImages = {
-        1: "https://lh3.googleusercontent.com/gg-dl/AOI_d__A9REdpA8frVIDhErWm2504bbDp5SisqnTBSFNA7pMOPRZD20fowb137roX_PVWzOxWa-WjxXSbGQCf55yIYQN8V-JC4yrWWkXEfs4qL9svnzg3H5CDQDSWJ5BtiHoTN7NAmGwY7j7aUPyWaLrAqNNN0xbnLt0Lh6dvjeq6E6YPHAIzg",
-        2: "https://lh3.googleusercontent.com/gg-dl/AOI_d_9lFHnDcz45uyNqwPn3uZ2FODiZF2rTxXQq2sTKDuFUHCEzDXwbiqSPi9w39I6XCGq0B9GSNdVcx6X-svDy0JyzwTXY9O12I4iBhk3JFDI4NPqnl1h8g5M8plS77e73g7IJsXcANKdyOL5LLVhkYkoLXwCrOr8oYIWSr2Z0NVNW-yOujA",
-        3: "https://lh3.googleusercontent.com/gg-dl/AOI_d__fHukLks_e5hQaPTKRFyCgJirNyMD2t4Kyax-slRjqhoIk0qXnleac9FaHIynYYBwwiX0EPxXhkZKMUYixNvvoeQtQPi8AxKD588NQ6TKzLGoBG8OV9c9ZvWpMtmudi0PAm4QINlHQPmp4Lzwf6yRjEXR3c1T5hzMlQE3uPlkXQC5O_Q",
-        4: "https://lh3.googleusercontent.com/gg-dl/AOI_d_9okDawGuPbjKmQE805p0XGBJ3iIsjas4YcpTfGfo4kzPtjmSqW8GMeBjhWuzKjt4uxXBO9jloMl8zZ8KBoqPqO09cuD9jncLghGfbT6fNdYL0kcuQFa_8_44Qn3Z8AIidlWCqbW2WcsrEPZoFVueXw3TLG_2hDXPHlb12fOgP3TsanQg",
-        5: "https://lh3.googleusercontent.com/gg-dl/AOI_d_9WO5sO3x8LAZvonRX-eMFqxmKPGVOraeHXTAa5m7jFZvuct4-X32khRGWgCc-Dro6T6SWLPfFjvaLrPlx62zTTk8cpyU-cyxfgbvdrUdkI3Qwdm_Y5BxmEYYnzXUiA3KzueWRlop5T3I8AzMLJZYms307tnY7q4laDmK6oTKraOoXd",
+        1: "https://arcraiders.wiki/w/images/c/c4/Trophy_Display_card.png",
+        2: "https://arcraiders.wiki/w/images/c/c4/Trophy_Display_card.png",
+        3: "https://arcraiders.wiki/w/images/c/c4/Trophy_Display_card.png",
+        4: "https://arcraiders.wiki/w/images/c/c4/Trophy_Display_card.png",
+        5: "https://arcraiders.wiki/w/images/c/c4/Trophy_Display_card.png",
     };
 
     const stepLabels = ["Step One", "Step Two", "Step Three", "Step Four", "Step Five"];
@@ -177,56 +177,81 @@
             id: 1, name: "Roaming Threats", description: "Basic ARC units & industrial scavenging.",
             image: stageImages[1],
             items: [
-                { id: "s1_i1", name: "Rusted Bolts", required: 3, location: "Mechanical Areas (Cabinets)" },
-                { id: "s1_i2", name: "Pop Trigger", required: 15, location: "Kill Pops (Exploders)" },
-                { id: "s1_i3", name: "Tick Pod", required: 15, location: "Kill Ticks (Spiders)" },
-                { id: "s1_i4", name: "Surveyor Vault", required: 5, location: "Kill Surveyors (Balls)" }
+                { id: "s1_i1", name: "Rusted Bolts", required: 3, location: "Mechanical Areas (Cabinets)", image: "https://arcraiders.wiki/w/images/thumb/b/bf/Rusted_Bolts.png/50px-Rusted_Bolts.png.webp" },
+                { id: "s1_i2", name: "Pop Trigger", required: 15, location: "Kill Pops (Exploders)", image: "https://arcraiders.wiki/w/images/thumb/c/c6/Pop_Trigger.png/50px-Pop_Trigger.png.webp" },
+                { id: "s1_i3", name: "Tick Pod", required: 15, location: "Kill Ticks (Spiders)", image: "https://arcraiders.wiki/w/images/thumb/9/95/Tick_Pod.png/50px-Tick_Pod.png.webp" },
+                { id: "s1_i4", name: "Surveyor Vault", required: 5, location: "Kill Surveyors (Balls)", image: "https://arcraiders.wiki/w/images/thumb/a/a9/Surveyor_Vault.png/50px-Surveyor_Vault.png.webp" }
             ],
-            rewards: ["10x Mod Components", "3x Power Rod", "10x Raider Tokens", "1x Light Gun Parts BP"]
+            rewards: [
+                { name: "10x Mod Components", image: "https://arcraiders.wiki/w/images/thumb/0/0f/Mod_Components.png/50px-Mod_Components.png.webp" },
+                { name: "3x Power Rod", image: "https://arcraiders.wiki/w/images/thumb/3/31/Power_Rod.png/50px-Power_Rod.png.webp" },
+                { name: "10x Raider Tokens", image: "https://arcraiders.wiki/w/images/thumb/7/7b/Icon_Raider_Token.png/50px-Icon_Raider_Token.png.webp" },
+                { name: "1x Light Gun Parts BP", image: "https://arcraiders.wiki/w/images/thumb/c/c9/Light_Gun_Parts.png/50px-Light_Gun_Parts.png.webp" }
+            ]
         },
         {
             id: 2, name: "Soaring Menaces", description: "Aerial threats & medical supplies.",
             image: stageImages[2],
             items: [
-                { id: "s2_i1", name: "Spotter Relay", required: 10, location: "Kill Spotters" },
-                { id: "s2_i2", name: "Expired Respirator", required: 3, location: "Medical Areas" },
-                { id: "s2_i3", name: "Wasp Driver", required: 20, location: "Kill Wasps (Drones)" },
-                { id: "s2_i4", name: "Hornet Driver", required: 15, location: "Kill Hornets" }
+                { id: "s2_i1", name: "Spotter Relay", required: 10, location: "Kill Spotters", image: "https://arcraiders.wiki/w/images/thumb/5/58/Spotter_Relay.png/50px-Spotter_Relay.png.webp" },
+                { id: "s2_i2", name: "Expired Respirator", required: 3, location: "Medical Areas", image: "https://arcraiders.wiki/w/images/thumb/b/ba/Expired_Respirator.png/50px-Expired_Respirator.png.webp" },
+                { id: "s2_i3", name: "Wasp Driver", required: 20, location: "Kill Wasps (Drones)", image: "https://arcraiders.wiki/w/images/thumb/3/30/Wasp_Driver.png/50px-Wasp_Driver.png.webp" },
+                { id: "s2_i4", name: "Hornet Driver", required: 15, location: "Kill Hornets", image: "https://arcraiders.wiki/w/images/thumb/b/bb/Hornet_Driver.png/50px-Hornet_Driver.png.webp" }
             ],
-            rewards: ["3x Vita Spray", "3x Photoelectric Cloak", "20x Raider Tokens", "1x Vita Shot BP"]
+            rewards: [
+                { name: "3x Vita Spray", image: "https://arcraiders.wiki/w/images/thumb/1/1d/Vita_Spray.png/50px-Vita_Spray.png.webp" },
+                { name: "3x Photoelectric Cloak", image: "https://arcraiders.wiki/w/images/thumb/0/06/Photoelectric_Cloak.png/50px-Photoelectric_Cloak.png.webp" },
+                { name: "20x Raider Tokens", image: "https://arcraiders.wiki/w/images/thumb/7/7b/Icon_Raider_Token.png/50px-Icon_Raider_Token.png.webp" },
+                { name: "1x Vita Shot BP", image: "https://arcraiders.wiki/w/images/thumb/7/7d/Vita_Shot.png/50px-Vita_Shot.png.webp" }
+            ]
         },
         {
             id: 3, name: "Ferocious Foes", description: "Heavy armor & hardened targets.",
             image: stageImages[3],
             items: [
-                { id: "s3_i1", name: "ARC Perf. Steel", required: 10, location: "Rare Drop (Heavy Units)" },
-                { id: "s3_i2", name: "Shredder Gyro", required: 5, location: "Kill Shredders (Stella Montis)" },
-                { id: "s3_i3", name: "Leaper Pulse Unit", required: 10, location: "Kill Leapers" },
-                { id: "s3_i4", name: "Bastion Cell", required: 5, location: "Kill Bastions (Tanks)" }
+                { id: "s3_i1", name: "ARC Perf. Steel", required: 10, location: "Rare Drop (Heavy Units)", image: "https://arcraiders.wiki/w/images/thumb/0/02/ARC_Performance_Steel.png/50px-ARC_Performance_Steel.png.webp" },
+                { id: "s3_i2", name: "Shredder Gyro", required: 5, location: "Kill Shredders (Stella Montis)", image: "https://arcraiders.wiki/w/images/thumb/9/96/Shredder_Gyro.png/50px-Shredder_Gyro.png.webp" },
+                { id: "s3_i3", name: "Leaper Pulse Unit", required: 10, location: "Kill Leapers", image: "https://arcraiders.wiki/w/images/thumb/a/a0/Leaper_Pulse_Unit.png/50px-Leaper_Pulse_Unit.png.webp" },
+                { id: "s3_i4", name: "Bastion Cell", required: 5, location: "Kill Bastions (Tanks)", image: "https://arcraiders.wiki/w/images/thumb/0/06/Bastion_Cell.png/50px-Bastion_Cell.png.webp" }
             ],
-            rewards: ["1x Kinetic Converter", "3x Anvil Splitter", "30x Raider Tokens", "1x Shotgun Silencer BP"]
+            rewards: [
+                { name: "1x Kinetic Converter", image: "https://arcraiders.wiki/w/images/thumb/7/71/Kinetic_Converter.png/50px-Kinetic_Converter.png.webp" },
+                { name: "3x Anvil Splitter", image: "https://arcraiders.wiki/w/images/thumb/e/ef/Anvil_Splitter.png/50px-Anvil_Splitter.png.webp" },
+                { name: "30x Raider Tokens", image: "https://arcraiders.wiki/w/images/thumb/7/7b/Icon_Raider_Token.png/50px-Icon_Raider_Token.png.webp" },
+                { name: "1x Shotgun Silencer BP", image: "https://arcraiders.wiki/w/images/thumb/4/4d/Shotgun_Silencer.png/50px-Shotgun_Silencer.png.webp" }
+            ]
         },
         {
             id: 4, name: "Dominant Dangers", description: "Elite units & crafting materials.",
             image: stageImages[4],
             items: [
-                { id: "s4_i1", name: "ARC Synth. Resin", required: 10, location: "Rare Drop (Elite Units)" },
-                { id: "s4_i2", name: "Magnetic Accelerator", required: 10, location: "Craft (Refiner 3) / Exodus" },
-                { id: "s4_i3", name: "Rocketeer Driver", required: 8, location: "Kill Rocketeers" },
-                { id: "s4_i4", name: "Queen Reactor", required: 3, location: "Kill Queens (Event)" }
+                { id: "s4_i1", name: "ARC Synth. Resin", required: 10, location: "Rare Drop (Elite Units)", image: "https://arcraiders.wiki/w/images/thumb/7/72/ARC_Synthetic_Resin.png/50px-ARC_Synthetic_Resin.png.webp" },
+                { id: "s4_i2", name: "Magnetic Accelerator", required: 10, location: "Craft (Refiner 3) / Exodus", image: "https://arcraiders.wiki/w/images/thumb/5/5e/Magnetic_Accelerator.png/50px-Magnetic_Accelerator.png.webp" },
+                { id: "s4_i3", name: "Rocketeer Driver", required: 8, location: "Kill Rocketeers", image: "https://arcraiders.wiki/w/images/thumb/e/ef/Rocketeer_Driver.png/50px-Rocketeer_Driver.png.webp" },
+                { id: "s4_i4", name: "Queen Reactor", required: 3, location: "Kill Queens (Event)", image: "https://arcraiders.wiki/w/images/thumb/6/6b/Queen_Reactor.png/50px-Queen_Reactor.png.webp" }
             ],
-            rewards: ["1x Bobcat IV SMG", "5x Wolfpack", "40x Raider Tokens", "1x Bobcat BP"]
+            rewards: [
+                { name: "1x Bobcat IV SMG", image: "https://arcraiders.wiki/w/images/thumb/3/36/Bobcat-Level1.png/50px-Bobcat-Level1.png.webp" },
+                { name: "5x Wolfpack", image: "https://arcraiders.wiki/w/images/thumb/2/24/Wolfpack.png/50px-Wolfpack.png.webp" },
+                { name: "40x Raider Tokens", image: "https://arcraiders.wiki/w/images/thumb/7/7b/Icon_Raider_Token.png/50px-Icon_Raider_Token.png.webp" },
+                { name: "1x Bobcat BP", image: "https://arcraiders.wiki/w/images/thumb/3/36/Bobcat-Level1.png/50px-Bobcat-Level1.png.webp" }
+            ]
         },
         {
             id: 5, name: "Imposing Behemoths", description: "Map bosses & Exodus zones.",
             image: stageImages[5],
             items: [
-                { id: "s5_i1", name: "Exodus Modules", required: 5, location: "Exodus Areas" },
-                { id: "s5_i2", name: "Geiger Counter", required: 3, location: "Stella Montis Assembly" },
-                { id: "s5_i3", name: "Bombardier Cell", required: 8, location: "Kill Bombardiers" },
-                { id: "s5_i4", name: "Matriarch Reactor", required: 3, location: "Kill Matriarch (Boss)" }
+                { id: "s5_i1", name: "Exodus Modules", required: 5, location: "Exodus Areas", image: "https://arcraiders.wiki/w/images/thumb/1/1b/Exodus_Modules.png/50px-Exodus_Modules.png.webp" },
+                { id: "s5_i2", name: "Geiger Counter", required: 3, location: "Stella Montis Assembly", image: "https://arcraiders.wiki/w/images/thumb/3/37/Geiger_Counter.png/50px-Geiger_Counter.png.webp" },
+                { id: "s5_i3", name: "Bombardier Cell", required: 8, location: "Kill Bombardiers", image: "https://arcraiders.wiki/w/images/thumb/4/46/Bombardier_Cell.png/50px-Bombardier_Cell.png.webp" },
+                { id: "s5_i4", name: "Matriarch Reactor", required: 3, location: "Kill Matriarch (Boss)", image: "https://arcraiders.wiki/w/images/thumb/2/24/Matriarch_Reactor.png/50px-Matriarch_Reactor.png.webp" }
             ],
-            rewards: ["2x Snap Hook", "1x Aphelion Rifle", "50x Raider Tokens", "1x Snap Hook BP"]
+            rewards: [
+                { name: "2x Snap Hook", image: "https://arcraiders.wiki/w/images/thumb/5/56/Snap_Hook.png/50px-Snap_Hook.png.webp" },
+                { name: "1x Aphelion Rifle", image: "https://arcraiders.wiki/w/images/thumb/8/88/Aphelion.png/50px-Aphelion.png.webp" },
+                { name: "50x Raider Tokens", image: "https://arcraiders.wiki/w/images/thumb/7/7b/Icon_Raider_Token.png/50px-Icon_Raider_Token.png.webp" },
+                { name: "1x Snap Hook BP", image: "https://arcraiders.wiki/w/images/thumb/5/56/Snap_Hook.png/50px-Snap_Hook.png.webp" }
+            ]
         }
     ];
 
@@ -322,7 +347,10 @@
                 itemsHtml += `
                     <div class="item-row ${done ? "item-done" : ""} border border-gold/20 rounded-lg p-2 bg-surface-light/50">
                         <div class="flex items-center justify-between mb-1">
-                            <span class="item-name text-sm font-semibold font-barlow ${done ? "text-green-400" : "text-gray-200"}">${item.name}</span>
+                            <div class="flex items-center gap-2">
+                                <img src="${item.image}" alt="${item.name}" class="w-8 h-8 object-contain flex-shrink-0">
+                                <span class="item-name text-sm font-semibold font-barlow ${done ? "text-green-400" : "text-gray-200"}">${item.name}</span>
+                            </div>
                             <span class="text-xs font-mono ${done ? "text-green-400" : "text-gold"}">${count}/${item.required}</span>
                         </div>
                         <div class="flex items-center justify-between">
@@ -346,7 +374,7 @@
                     </button>
                     <div id="rewards_${stage.id}" class="rewards-content pb-2">
                         <ul class="space-y-1">
-                            ${stage.rewards.map(r => `<li class="text-xs text-gray-300 flex items-center gap-1.5"><span class="material-symbols-outlined text-gold text-sm">star</span>${r}</li>`).join("")}
+                            ${stage.rewards.map(r => `<li class="text-xs text-gray-300 flex items-center gap-1.5"><img src="${r.image}" alt="${r.name}" class="w-5 h-5 object-contain">${r.name}</li>`).join("")}
                         </ul>
                     </div>
                 </div>
