@@ -46,8 +46,6 @@
         .progress-fill { transition: width 0.4s ease; }
         .btn-mod { transition: all 0.15s ease; }
         .btn-mod:active { transform: scale(0.9); }
-        .rewards-content { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
-        .rewards-content.open { max-height: 500px; }
         .done-badge {
             position: absolute; top: 8px; right: 8px;
             background: #22c55e; color: #000; font-weight: 700;
@@ -163,11 +161,19 @@
     <script>
     // ─── Data ───────────────────────────────────────────────────────────
     const stageImages = {
-        1: "https://arcraiders.wiki/w/images/c/c4/Trophy_Display_card.png",
-        2: "https://arcraiders.wiki/w/images/c/c4/Trophy_Display_card.png",
-        3: "https://arcraiders.wiki/w/images/c/c4/Trophy_Display_card.png",
-        4: "https://arcraiders.wiki/w/images/c/c4/Trophy_Display_card.png",
-        5: "https://arcraiders.wiki/w/images/c/c4/Trophy_Display_card.png",
+        1: "https://arcraiders.wiki/w/images/c/c3/ARC_Surveyor.png",
+        2: "https://arcraiders.wiki/w/images/1/17/ARC_Wasp.png",
+        3: "https://arcraiders.wiki/w/images/4/47/ARC_Bastion.png",
+        4: "https://arcraiders.wiki/w/images/5/57/ARC_Rocketeer.png",
+        5: "https://arcraiders.wiki/w/images/4/49/ARC_Matriarch.png",
+    };
+
+    const stageImagesSecondary = {
+        1: "https://arcraiders.wiki/w/images/1/17/ARC_Tick.png",
+        2: "https://arcraiders.wiki/w/images/f/f7/ARC_Hornet.png",
+        3: "https://arcraiders.wiki/w/images/0/06/ARC_Leaper.png",
+        4: "https://arcraiders.wiki/w/images/9/9d/ARC_The_Queen.png",
+        5: "https://arcraiders.wiki/w/images/7/76/ARC_Bombardier.png",
     };
 
     const stepLabels = ["Step One", "Step Two", "Step Three", "Step Four", "Step Five"];
@@ -316,10 +322,12 @@
 
             // Stage image and info
             const stageInfo = `
-                <div class="relative">
-                    <img src="${stage.image}" alt="${stage.name}" class="w-full h-32 object-cover opacity-80">
-                    <div class="absolute inset-0 bg-gradient-to-t from-surface via-surface/60 to-transparent"></div>
-                    <div class="absolute bottom-2 left-3 right-3">
+                <div class="relative bg-surface-light h-36 overflow-hidden">
+                    <div class="flex items-center justify-center gap-2 h-full px-4 py-2">
+                        <img src="${stage.image}" alt="${stage.name}" class="h-24 w-auto object-contain drop-shadow-lg">
+                        <img src="${stageImagesSecondary[stage.id]}" alt="${stage.name}" class="h-24 w-auto object-contain drop-shadow-lg">
+                    </div>
+                    <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-surface to-transparent p-2 pt-6">
                         <h3 class="text-base font-bold text-white leading-tight font-barlow">${stage.name}</h3>
                         <p class="text-xs text-gray-400 font-prompt">${stage.description}</p>
                     </div>
@@ -365,18 +373,13 @@
             });
             itemsHtml += "</div>";
 
-            // Rewards
+            // Rewards (always visible)
             const rewardsHtml = `
-                <div class="border-t border-gold/20 mx-3 mt-1">
-                    <button onclick="toggleRewards(${stage.id})" class="w-full flex items-center justify-between py-2 text-left">
-                        <span class="text-sm font-bold text-gold uppercase tracking-wider font-barlow">Rewards:</span>
-                        <span id="rewardsIcon_${stage.id}" class="material-symbols-outlined text-gold text-base transition-transform">expand_more</span>
-                    </button>
-                    <div id="rewards_${stage.id}" class="rewards-content pb-2">
-                        <ul class="space-y-1">
-                            ${stage.rewards.map(r => `<li class="text-xs text-gray-300 flex items-center gap-1.5"><img src="${r.image}" alt="${r.name}" class="w-5 h-5 object-contain">${r.name}</li>`).join("")}
-                        </ul>
-                    </div>
+                <div class="border-t border-gold/20 mx-3 mt-1 pb-3 pt-2">
+                    <span class="text-sm font-bold text-gold uppercase tracking-wider font-barlow">Rewards:</span>
+                    <ul class="space-y-1 mt-1.5">
+                        ${stage.rewards.map(r => `<li class="text-xs text-gray-300 flex items-center gap-1.5"><img src="${r.image}" alt="${r.name}" class="w-5 h-5 object-contain">${r.name}</li>`).join("")}
+                    </ul>
                 </div>
             `;
 
@@ -446,14 +449,7 @@
         render();
     }
 
-    function toggleRewards(stageId) {
-        const el = document.getElementById("rewards_" + stageId);
-        const icon = document.getElementById("rewardsIcon_" + stageId);
-        el.classList.toggle("open");
-        icon.style.transform = el.classList.contains("open") ? "rotate(180deg)" : "";
-    }
-
-    function resetTracker() {
+function resetTracker() {
         if (!confirm("Reset all progress? This cannot be undone.")) return;
         trackerState = {};
         saveState();
